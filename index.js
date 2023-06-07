@@ -10,3 +10,10 @@ const app = express();
 
 app.use(cors())
 app.use(express)
+
+app.get('/', (req, res) => {
+    res.send('Toy house Running successfully');
+})
+app.listen(port, () => {
+    console.log('listening to port ', port);
+})
