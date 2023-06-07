@@ -8,3 +8,5 @@ const app = express();
 
 // here are the middleware
 
+app.use(cors())
+app.use(express)
