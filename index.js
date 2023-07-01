@@ -27,7 +27,7 @@ async function run() {
     const toysCollection = client.db("toyLand").collection("toys");
 
 
-    // get all data for Alltoy page 
+    // get all data for Alltoy page from mongodb
     app.get('/alltoys', async (req, res) => {
         const query = {}
         const alltoys = await toysCollection.find(query).toArray();
