@@ -33,6 +33,13 @@ async function run() {
         const alltoys = await toysCollection.find(query).toArray();
         res.send(alltoys)
     });
+    // get specific data for toy details 
+    app.get('/toy/:id', async (req, res) => {
+        const id = req.params.id;
+        const query = { _id:new ObjectId(id) }
+        const toy = await toysCollection.findOne(query)
+        res.send(toy)
+    });
 
 
     // Send a ping to confirm a successful connection
