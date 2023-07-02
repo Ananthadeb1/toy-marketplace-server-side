@@ -1,7 +1,7 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const port = process.env.PORT || 5000;
 const app = express();
 
@@ -17,7 +17,7 @@ const client = new MongoClient(uri, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
 });
 
 async function run() {
@@ -26,31 +26,50 @@ async function run() {
 
     const toysCollection = client.db("toyLand").collection("toys");
 
-
     // get all data for Alltoy page from mongodb
-    app.get('/alltoys', async (req, res) => {
-        const query = {}
-        const alltoys = await toysCollection.find(query).toArray();
-        res.send(alltoys)
+    app.get("/alltoys", async (req, res) => {
+      const query = {};
+      const alltoys = await toysCollection.find(query).toArray();
+      res.send(alltoys);
     });
-    // get specific data for toy details 
-    app.get('/toy/:id', async (req, res) => {
-        const id = req.params.id;
-        const query = { _id:new ObjectId(id) }
-        const toy = await toysCollection.findOne(query)
-        res.send(toy)
+    // get specific data for toy details
+    app.get("/toy/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const toy = await toysCollection.findOne(query);
+      res.send(toy);
     });
     // insert data on toys collection
-    app.post('/addtoy', async (req, res) => {
+    app.post("/addtoy", async (req, res) => {
       const toy = req.body;
       const result = await toysCollection.insertOne(toy);
-      res.send(result)
-  })
+      res.send(result);
+    });
+    // get mytoys data based on email address
+    app.get("/mytoys", async (req, res) => {
+      let query = {};
+      if (req.query.email) {
+        query = { seller_email: req.query.email };
+      }
+      console.log(query);
+      const mytoys = await toysCollection.find(query).toArray();
+      console.log(mytoys);
+      res.send(mytoys);
+    });
 
+    //  delete  item by id query
+    app.delete('/mytoys/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const deletedToy = await toysCollection.deleteOne(query);
+      res.send(deletedToy)
+  });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!"
+    );
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
@@ -58,10 +77,9 @@ async function run() {
 }
 run().catch(console.dir);
 
-
-app.get('/', (req, res) => {
-    res.send('Pure spices Running successfully');
-})
+app.get("/", (req, res) => {
+  res.send("Pure spices Running successfully");
+});
 app.listen(port, () => {
-    console.log('listening to  ', port);
-})
+  console.log("listening to  ", port);
+});
