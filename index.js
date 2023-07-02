@@ -40,6 +40,12 @@ async function run() {
         const toy = await toysCollection.findOne(query)
         res.send(toy)
     });
+    // insert data on toys collection
+    app.post('/addtoy', async (req, res) => {
+      const toy = req.body;
+      const result = await toysCollection.insertOne(toy);
+      res.send(result)
+  })
 
 
     // Send a ping to confirm a successful connection
