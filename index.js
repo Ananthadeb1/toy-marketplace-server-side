@@ -8,11 +8,7 @@ const app = express();
 // middleware
 app.use(cors());
 app.use(express.json());
-app.UseCors(x => x
-  .AllowAnyMethod()
-  .AllowAnyHeader()
-  .SetIsOriginAllowed(origin => true) // allow any origin
-  .AllowCredentials()); // allow credentials
+
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.zcvxptr.mongodb.net/?retryWrites=true&w=majority`;
 
