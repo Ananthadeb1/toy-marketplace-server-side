@@ -53,7 +53,6 @@ async function run() {
       }
       console.log(query);
       const mytoys = await toysCollection.find(query).toArray();
-      console.log(mytoys);
       res.send(mytoys);
     });
 
@@ -64,6 +63,13 @@ async function run() {
       const deletedToy = await toysCollection.deleteOne(query);
       res.send(deletedToy)
   });
+  // edit data by filtering 
+  app.put('/mytoys/:id', async (req, res) => {
+    const id = req.params.id;
+    const updatedData = await toysCollection.updateOne({ _id: new ObjectId(id) }, { $set: req.body })
+    console.log(updatedData)
+    res.send(updatedData)
+});
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
