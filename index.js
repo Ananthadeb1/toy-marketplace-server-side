@@ -26,6 +26,14 @@ async function run() {
 
     const toysCollection = client.db("toyLand").collection("toys");
 
+     // get data for homepage 
+     app.get('/toyssample', async (req, res) => {
+      const query = {}
+      const toysData = await toysCollection.find(query).toArray()
+      console.log(toysData)
+      res.send(toysData)
+  });
+
     // get all data for Alltoy page from mongodb
     app.get("/alltoys", async (req, res) => {
       const query = {};
